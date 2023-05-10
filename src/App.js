@@ -1,15 +1,22 @@
+import { Route, BrowserRouter as Router, Routes } from 'react-router-dom';
+import Dictionary from './Dictionary';
 import React from 'react';
+import ReactDOM from 'react-dom';
+import StarredWords from './StarredWords';
 
-import './App.css';
-
-function App() {
+const App = () => {
   return (
-    <div className="bg-neutral-100">
-      <div className="rectangle">
-        <h5 className="px-8 py-8 text-2xl text-white">Word Keeper</h5>
-      </div>
+    <div>
+      <Router>
+        <Routes>
+          <Route path="/" element={<Dictionary />} />
+          <Route path="/favorites" element={<StarredWords />} />
+        </Routes>
+      </Router>
     </div>
   );
-}
+};
+
+ReactDOM.render(<App />, document.getElementById('root'));
 
 export default App;
