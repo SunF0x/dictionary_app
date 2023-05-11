@@ -7,15 +7,23 @@ const Dictionary = () => {
   const handleChange = (event) => {
     setSearchTerm(event.target.value);
   };
-  const [checked, setChecked] = React.useState([]);
+  const [checked, setChecked] = React.useState(JSON.parse(window.localStorage.getItem('checked')));
 
   const handleAddChecked = (item) => {
-    setChecked([...checked, item.id]);
+    setChecked([...checked, item]);
   };
 
   const handleRemoveChecked = (item) => {
-    setChecked(checked.filter((a) => a !== item.id));
+    setChecked(checked.filter((a) => a.id !== item.id));
   };
+
+  React.useEffect(() => {
+    setChecked(JSON.parse(window.localStorage.getItem('checked')));
+  }, []);
+
+  React.useEffect(() => {
+    window.localStorage.setItem('checked', JSON.stringify(checked));
+  }, [checked]);
 
   const [open, setOpen] = React.useState([]);
 
@@ -50,6 +58,7 @@ const Dictionary = () => {
         });
       });
   }, [searchTerm]);
+
   return (
     <div className="static">
       <div className="relative m-2.5 min-h-16 rounded-md bg-[#81bef5]">
@@ -83,7 +92,7 @@ const Dictionary = () => {
                 </h5>
               </div>
               <div className="absolute inset-y-0 right-0 pr-8 pt-1.5">
-                {checked.includes(item.id) ? (
+                {checked.includes(item) ? (
                   <button
                     onClick={() => handleRemoveChecked(item)}
                     className="text-[#81bef5] text-4xl">
