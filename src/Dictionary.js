@@ -82,8 +82,10 @@ const Dictionary = () => {
         <div className="relative grow m-2.5">
           {searchResults?.map((item) => (
             <div className="relative flex flex-col gap-2">
-              <div onClick={() => handleOpen(item)} className="flex flex-row bg-white rounded-md">
-                <h5 className="px-8 py-4 text-xl font-bold">{item.name}</h5>
+              <div className="flex flex-row bg-white rounded-md">
+                <h5 onClick={() => handleOpen(item)} className="px-8 py-4 text-xl font-bold">
+                  {item.name}
+                </h5>
                 <h5 className="px-8 py-4 text-xl italic">{item.fl}</h5>
                 <h5 className="px-8 py-4 text-xl">
                   {item.shortdef?.toString().length > 60

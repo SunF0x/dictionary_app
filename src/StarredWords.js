@@ -43,7 +43,9 @@ function StarredWords() {
   }, [checked]);
 
   React.useEffect(() => {
-    if (filter.length === 0) {
+    if (filter.length === 0 && (!searchTerm || searchTerm === '')) {
+      setSelected(checked);
+    } else if (filter.length === 0) {
       setSelected(checked.filter((element) => element.name.indexOf(searchTerm) == 0));
     } else if (!searchTerm || searchTerm === '') {
       setSelected(checked.filter((element) => filter.indexOf(element.fl) >= 0));
@@ -97,8 +99,10 @@ function StarredWords() {
         <div className="relative grow m-2.5">
           {selected?.map((item) => (
             <div className="relative flex flex-col gap-2">
-              <div onClick={() => handleOpen(item)} className="flex flex-row bg-white rounded-md">
-                <h5 className="px-8 py-4 text-xl font-bold">{item.name}</h5>
+              <div className="flex flex-row bg-white rounded-md">
+                <h5 onClick={() => handleOpen(item)} className="px-8 py-4 text-xl font-bold">
+                  {item.name}
+                </h5>
                 <h5 className="px-8 py-4 text-xl italic">{item.fl}</h5>
                 <h5 className="px-8 py-4 text-xl">
                   {item.shortdef?.toString().length > 60
