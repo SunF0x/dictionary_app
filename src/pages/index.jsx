@@ -7,7 +7,9 @@ const Dictionary = () => {
   const handleChange = (event) => {
     setSearchTerm(event.target.value);
   };
-  const [checked, setChecked] = React.useState(JSON.parse(window.localStorage.getItem('checked')));
+  const [checked, setChecked] = React.useState(
+    JSON.parse(window.localStorage.getItem('checked')) || []
+  );
 
   const handleAddChecked = (item) => {
     setChecked([...checked, item]);
@@ -17,9 +19,9 @@ const Dictionary = () => {
     setChecked(checked.filter((a) => a.id !== item.id));
   };
 
-  React.useEffect(() => {
-    setChecked(JSON.parse(window.localStorage.getItem('checked')));
-  }, []);
+  // React.useEffect(() => {
+  //   setChecked(JSON.parse(window.localStorage.getItem('checked')));
+  // }, []);
 
   React.useEffect(() => {
     window.localStorage.setItem('checked', JSON.stringify(checked));
@@ -34,6 +36,13 @@ const Dictionary = () => {
       setOpen([...open, item.id]);
     }
   };
+
+  function isChecked(item) {
+    const getIdsArray = checked?.map(({ id }) => id);
+    getIdsArray?.includes(item.id);
+    return getIdsArray?.includes(item.id);
+    // return false
+  }
 
   React.useEffect(() => {
     let results = [];
@@ -81,9 +90,11 @@ const Dictionary = () => {
         </div>
         <div className="relative grow m-2.5">
           {searchResults?.map((item) => (
-            <div className="relative flex flex-col gap-2">
+            <div key={item.id} className="relative flex flex-col gap-2">
               <div className="flex flex-row bg-white rounded-md">
-                <h5 onClick={() => handleOpen(item)} className="px-8 py-4 text-xl font-bold">
+                <h5
+                  onClick={() => handleOpen(item)}
+                  className="cursor-pointer px-8 py-4 text-xl font-bold">
                   {item.name}
                 </h5>
                 <h5 className="px-8 py-4 text-xl italic">{item.fl}</h5>
@@ -94,7 +105,7 @@ const Dictionary = () => {
                 </h5>
               </div>
               <div className="absolute inset-y-0 right-0 pr-8 pt-1.5">
-                {checked.includes(item) ? (
+                {isChecked(item) ? (
                   <button
                     onClick={() => handleRemoveChecked(item)}
                     className="text-[#81bef5] text-4xl">

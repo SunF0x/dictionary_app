@@ -1,8 +1,7 @@
 import { Route, BrowserRouter as Router, Routes } from 'react-router-dom';
-import Dictionary from './pages/Dictionary';
+import Dictionary from './pages/index';
 import React from 'react';
-import ReactDOM from 'react-dom';
-import StarredWords from './pages/StarredWords';
+import StarredWords from './pages/favorites';
 
 const App = () => {
   return (
@@ -16,7 +15,5 @@ const App = () => {
     </div>
   );
 };
-
-ReactDOM.render(<App />, document.getElementById('root'));
 
 export default App;

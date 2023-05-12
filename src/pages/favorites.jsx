@@ -1,6 +1,4 @@
-// import { DndProvider, useDrag, useDrop } from 'react-dnd';
 import { DragDropContext, Draggable, Droppable } from 'react-beautiful-dnd';
-// import HTML5Backend from 'react-dnd-html5-backend';
 import { Link } from 'react-router-dom';
 import React from 'react';
 
@@ -8,9 +6,11 @@ const type = ['adjective', 'verb', 'noun', 'adverb', 'abbreviation'];
 
 function StarredWords() {
   const [searchTerm, setSearchTerm] = React.useState('');
-  const [checked, setChecked] = React.useState(JSON.parse(window.localStorage.getItem('checked')));
+  const [checked, setChecked] = React.useState(
+    JSON.parse(window.localStorage.getItem('checked') || [])
+  );
   const [selected, setSelected] = React.useState([]);
-  const getIdsArray = () => checked.map(({ id }) => id);
+  const getIdsArray = () => checked?.map(({ id }) => id);
 
   const [itemList, setItemList] = React.useState(getIdsArray);
 
@@ -90,7 +90,7 @@ function StarredWords() {
   }, [selected]);
 
   React.useEffect(() => {
-    setChecked(JSON.parse(window.localStorage.getItem('checked')));
+    setChecked(JSON.parse(window.localStorage.getItem('checked')) || []);
     setSelected(checked);
   }, []);
 
@@ -114,7 +114,7 @@ function StarredWords() {
           />
           <div className="absolute flex flex-col inset-x-0 top-0 mt-20 mx-4 text-xl">
             {type.map((part) => (
-              <label>
+              <label key={part}>
                 <input
                   key={part}
                   type="checkbox"
@@ -199,41 +199,6 @@ function StarredWords() {
             </Droppable>
           </DragDropContext>
         </div>
-        {/* {selected?.map((item) => (
-              <div className="relative flex flex-col gap-2">
-                <div className="flex flex-row bg-white rounded-md">
-                  <button onClick={() => handleRemoveChecked(item)} className="px-8 pb-2 text-4xl">
-                    ≡
-                  </button>
-                  <h5 onClick={() => handleOpen(item)} className="px-8 py-4 text-xl font-bold">
-                    {item.name}
-                  </h5>
-                  <h5 className="px-8 py-4 text-xl italic">{item.fl}</h5>
-                  <h5 className="px-8 py-4 text-xl">
-                    {item.shortdef?.toString().length > 60
-                      ? item.shortdef?.toString().substring(0, 60) + '...'
-                      : item.shortdef?.toString()}
-                  </h5>
-                </div>
-                <div className="absolute inset-y-0 right-0 pr-8 pt-1.5">
-                  <button
-                    onClick={() => handleRemoveChecked(item)}
-                    className="text-[#81bef5] text-4xl">
-                    ★
-                  </button>
-                </div>
-                {open.includes(item.id) ? (
-                  <div className="flex flex-row bg-[#81bef5] rounded-md">
-                    {item?.prs === 0 || <h5 className="px-8 py-4 text-xl italic">{item.prs}</h5>}
-                    <h5 className="px-8 py-4 text-xl">{item.shortdef?.toString()}</h5>
-                  </div>
-                ) : (
-                  ''
-                )}
-                <br />
-              </div>
-            ))} */}
-        {/* </div> */}
       </div>
     </div>
   );

@@ -3,16 +3,12 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "@testing-library/jest-dom": "^5.16.5",
-    "@testing-library/react": "^13.4.0",
-    "@testing-library/user-event": "^13.5.0",
     "prettier": "^2.8.8",
     "react": "^18.2.0",
     "react-beautiful-dnd": "^13.1.1",
     "react-dom": "^18.2.0",
     "react-router-dom": "^6.11.1",
-    "react-scripts": "^5.0.1",
-    "web-vitals": "^2.1.4"
+    "react-scripts": "^5.0.1"
   },
   "scripts": {
     "prepare": "husky install",
@@ -62,12 +58,10 @@
   "lint-staged": {
     "*.{js,jsx}": [
       "prettier --write --config ./.prettierrc",
-      "eslint --fix",
-      "git add"
+      "eslint --fix"
     ],
     "*.{html,css,less,ejs,json}": [
-      "prettier --write --config ./.prettierrc",
-      "git add"
+      "prettier --write --config ./.prettierrc"
     ]
   }
 }
