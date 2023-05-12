@@ -1,3 +1,4 @@
+import { KEY, REACT_APP_API } from '../config/config.js';
 import { Link } from 'react-router-dom';
 import React from 'react';
 
@@ -19,9 +20,9 @@ const Dictionary = () => {
     setChecked(checked.filter((a) => a.id !== item.id));
   };
 
-  // React.useEffect(() => {
-  //   setChecked(JSON.parse(window.localStorage.getItem('checked')));
-  // }, []);
+  React.useEffect(() => {
+    setChecked(JSON.parse(window.localStorage.getItem('checked')) || []);
+  }, []);
 
   React.useEffect(() => {
     window.localStorage.setItem('checked', JSON.stringify(checked));
@@ -46,26 +47,26 @@ const Dictionary = () => {
 
   React.useEffect(() => {
     let results = [];
-    fetch(
-      `https://www.dictionaryapi.com/api/v3/references/collegiate/json/${searchTerm}?key=1d9890f5-a269-47a6-a9d7-d7f24b4ea2b7`
-    )
-      .then((response) => response.json())
-      .then((data) => {
-        data?.map((item) => {
-          if (item?.meta?.id) {
-            results.push({
-              id: item?.meta?.uuid,
-              name: item?.meta?.id,
-              fl: item?.fl,
-              prs: item?.hwi?.prs ? item?.hwi?.prs[0].mw : 0,
-              shortdef: item?.shortdef
-            });
-            setSearchResults([...results]);
-          } else {
-            setSearchResults([...results]);
-          }
+    if (searchTerm && searchTerm !== '') {
+      fetch(`${REACT_APP_API}/${searchTerm}?key=${KEY}`)
+        .then((response) => response.json())
+        .then((data) => {
+          data?.map((item) => {
+            if (item?.meta?.id) {
+              results.push({
+                id: item?.meta?.uuid,
+                name: item?.meta?.id,
+                fl: item?.fl,
+                prs: item?.hwi?.prs ? item?.hwi?.prs[0].mw : 0,
+                shortdef: item?.shortdef
+              });
+              setSearchResults([...results]);
+            } else {
+              setSearchResults([...results]);
+            }
+          });
         });
-      });
+    }
   }, [searchTerm]);
 
   return (
