@@ -7,27 +7,37 @@ import React from 'react';
 const type = ['adjective', 'verb', 'noun', 'adverb', 'abbreviation'];
 
 function StarredWords() {
-  const [searchTerm, setSearchTerm] = React.useState();
+  const [searchTerm, setSearchTerm] = React.useState('');
   const [checked, setChecked] = React.useState(JSON.parse(window.localStorage.getItem('checked')));
   const [selected, setSelected] = React.useState([]);
-  const [itemList, setItemList] = React.useState(getID);
+  const getIdsArray = () => checked.map(({ id }) => id);
 
-  function getID() {
-    let arr = [];
-    checked.map((item) => arr.push(item.id));
-    return arr;
-  }
+  const [itemList, setItemList] = React.useState(getIdsArray);
+
   const handleDrop = (droppedItem) => {
-    console.log(droppedItem);
     if (!droppedItem.destination) return;
     var updatedList = [...itemList];
     const [reorderedItem] = updatedList.splice(droppedItem.source.index, 1);
     updatedList.splice(droppedItem.destination.index, 0, reorderedItem);
     setItemList(updatedList);
   };
-  const handleChange = (event) => {
+
+  function debounce(callback, delay) {
+    let timeout;
+    return function () {
+      const fnCall = () => {
+        callback.apply(this, arguments);
+      };
+      clearTimeout(timeout);
+      timeout = setTimeout(fnCall, delay);
+    };
+  }
+
+  function handleChange(event) {
     setSearchTerm(event.target.value);
-  };
+  }
+
+  document.getElementById('search')?.addEventListener('input', debounce(handleChange, 200));
 
   const handleRemoveChecked = (item) => {
     setChecked(checked.filter((a) => a.id !== item.id));
@@ -75,9 +85,8 @@ function StarredWords() {
   }, [searchTerm, filter]);
 
   React.useEffect(() => {
-    let arr = [];
-    selected.map((item) => arr.push(item.id));
-    setItemList(arr);
+    const getIdsArray = () => selected.map(({ id }) => id);
+    setItemList(getIdsArray);
   }, [selected]);
 
   React.useEffect(() => {
@@ -100,9 +109,8 @@ function StarredWords() {
           <input
             className="absolute focus:outline-none focus:ring focus:border-[#81bef5] inset-x-0 top-0 mt-5 mx-4 px-5 py-4 rounded-md"
             type="text"
+            id="search"
             placeholder="Search"
-            value={searchTerm}
-            onChange={handleChange}
           />
           <div className="absolute flex flex-col inset-x-0 top-0 mt-20 mx-4 text-xl">
             {type.map((part) => (
