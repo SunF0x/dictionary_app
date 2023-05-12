@@ -1,8 +1,8 @@
 import { Route, BrowserRouter as Router, Routes } from 'react-router-dom';
-import Dictionary from './Dictionary';
+import Dictionary from './pages/Dictionary';
 import React from 'react';
 import ReactDOM from 'react-dom';
-import StarredWords from './StarredWords';
+import StarredWords from './pages/StarredWords';
 
 const App = () => {
   return (
